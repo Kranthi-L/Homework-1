@@ -6,6 +6,11 @@ public class DiskDetails {
 
     private double used;
 
+    public DiskDetails(double total, double used) {
+        this.total = total;
+        this.used = used;
+    }
+
     public double getTotal() {
         return total;
     }

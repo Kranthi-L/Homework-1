@@ -1,62 +1,61 @@
 package com.CloudAssignment.homework1.controllers;
 
-import com.CloudAssignment.homework1.DiskSpaceIndicator;
-import com.CloudAssignment.homework1.formats.CpuUsage;
-import com.CloudAssignment.homework1.formats.DiskDetails;
-import com.CloudAssignment.homework1.formats.MemoryDetails;
+import com.CloudAssignment.homework1.services.CpuService;
+import com.CloudAssignment.homework1.services.DiskService;
+import com.CloudAssignment.homework1.services.MemoryService;
 import com.CloudAssignment.homework1.services.NetworkBandwidthService;
-import com.sun.management.OperatingSystemMXBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.management.ManagementFactory;
-import java.util.List;
 
 @RestController
 public class Controller1 {
 
-    OperatingSystemMXBean osb = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+    @Autowired
+    DiskService diskService;
+
+    @Autowired
+    MemoryService memoryService;
+
+    @Autowired
+    CpuService cpuService;
+
+    @Autowired
+    NetworkBandwidthService networkBandwidthService;
 
     @GetMapping(path = "/disk")
-    public Object test(){
+    public ResponseEntity<Object> getDisk(){
         try{
-            DiskSpaceIndicator di = new DiskSpaceIndicator();
-            List<Double> li = di.getDiskSpace();
-            DiskDetails d = new DiskDetails();
-            d.setTotal(li.get(0));
-            d.setUsed(li.get(1));
-            return d;
-        }catch(Exception e){
-            return e.getMessage();
+            return  ResponseEntity.ok(diskService.getDiskSpace());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping(path = "/mem")
-    public Object memoryDetails(){
+    public ResponseEntity<Object> getMemory(){
         try{
-            long total = osb.getTotalMemorySize();
-            long free = osb.getFreeMemorySize();
-            return new MemoryDetails(total/(1024 * 1024), free/(1024 * 1024));
-        }catch(Exception e){
-            return e.getMessage();
+            return  ResponseEntity.ok(memoryService.getMemoryDetails());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping(path = "/cpu")
     public ResponseEntity<Object> getCpu(){
         try{
-            return ResponseEntity.ok(new CpuUsage(osb.getCpuLoad()*100));
+            return ResponseEntity.ok(cpuService.getCpuUsage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping(path="/net")
-    public Object getBandwidth(){
+    public ResponseEntity<Object> getBandwidth(){
         try{
-            NetworkBandwidthService ns = new NetworkBandwidthService();
-            return ns.getBandwidth();
+            return ResponseEntity.ok(networkBandwidthService.getBandwidth());
         }catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
