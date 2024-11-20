@@ -14,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -92,7 +93,8 @@ class Homework1ApplicationTests {
 
 }
 
-@WebMvcTest(controllers = Controller1.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class SecurityTest {
 
 	@MockBean
@@ -118,6 +120,17 @@ class SecurityTest {
 		try {
 			mockMvc.perform(get("/disk"))
 					.andExpect(status().isUnauthorized());
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	public void securityTest2() throws Exception {
+		when(memoryService.getMemoryDetails()).thenReturn(new MemoryDetails(18023,2313));
+		try {
+			mockMvc.perform(get("/mem").header("KEY", "secret"))
+					.andExpect(status().isOk());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

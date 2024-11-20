@@ -30,6 +30,7 @@ public class AuthenticationFilter extends GenericFilterBean {
             writer.print(exp.getMessage());
             writer.flush();
             writer.close();
+            return;
         }
 
         filterChain.doFilter(request, response);
