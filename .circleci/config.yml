@@ -11,11 +11,8 @@ jobs:
     steps:
       - checkout  # Checkout the code from the repo
       - run:
-          name: Run tests
-          command: mvn clean test  # Execute tests
-      - run:
-          name: Run tests and generate JaCoCo report
-          command: mvn clean verify
+          name: Run tests and Generate JaCoCo report
+          command: mvn clean test verify
       - run:
           name: Run SonarCloud analysis
           command: mvn sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORG -Dsonar.login=$SONAR_TOKEN
