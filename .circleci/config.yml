@@ -1,29 +1,24 @@
 version: 2.1
 
 jobs:
-  build:
+  test:
     docker:
       - image: openjdk:18-jdk  # Use an image that includes OpenJDK (for Spring Boot)
+        environment:
+          JAVA_HOME: /usr/local/openjdk-18
     steps:
       - checkout  # Checkout the code from the repo
       - run:
-          name: Set up Maven
+          name: Install Maven
           command: |
-            sudo apt-get update
-            sudo apt-get install maven
-      - run:
-          name: Build the project
-          command: mvn clean install  # Run Maven build for Spring Boot project
+            apt-get update
+            apt-get install -y maven
       - run:
           name: Run tests
-          command: mvn test  # Execute tests
+          command: mvn clean test  # Execute tests
 
 workflows:
   version: 2
-  build:
+  test:
     jobs:
-      - build:
-          filters:
-            branches:
-              only:
-                - b3  # This will only trigger the build on the 'b3' branch
+      -test
