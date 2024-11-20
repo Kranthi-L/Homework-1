@@ -3,14 +3,9 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: ubuntu:20.04  # Use an Ubuntu-based image with apt-get
+      - image: maven:3.8.6-openjdk-18  # Maven image with OpenJDK 18
     steps:
       - checkout  # Checkout the code from the repo
-      - run:
-          name: Install OpenJDK 18 and Maven
-          command: |
-            apt-get update
-            apt-get install -y openjdk-18-jdk maven
       - run:
           name: Run tests
           command: mvn clean test  # Execute tests
