@@ -1,7 +1,10 @@
 package com.CloudAssignment.homework1.controllers;
 
 import com.CloudAssignment.homework1.DiskSpaceIndicator;
+<<<<<<< HEAD
 import com.CloudAssignment.homework1.formats.Bandwidth;
+=======
+>>>>>>> 476cbf9 (Changed Bandwidth)
 import com.CloudAssignment.homework1.formats.CpuUsage;
 import com.CloudAssignment.homework1.formats.DiskDetails;
 import com.CloudAssignment.homework1.formats.MemoryDetails;
@@ -57,7 +60,11 @@ public class Controller1 {
     public Object getBandwidth(){
         try{
             NetworkBandwidthService ns = new NetworkBandwidthService();
+<<<<<<< HEAD
             return new Bandwidth(ns.getUploadBandwidth(),ns.getDownloadBandwidth());
+=======
+            return ns.getBandwidth();
+>>>>>>> 476cbf9 (Changed Bandwidth)
         }catch (Exception e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
