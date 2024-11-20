@@ -1,0 +1,29 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:20-jdk  # Use an image that includes OpenJDK (for Spring Boot)
+    steps:
+      - checkout  # Checkout the code from the repo
+      - run:
+          name: Set up Maven
+          command: |
+            sudo apt-get update
+            sudo apt-get install maven
+      - run:
+          name: Build the project
+          command: mvn clean install  # Run Maven build for Spring Boot project
+      - run:
+          name: Run tests
+          command: mvn test  # Execute tests
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - b3  # This will only trigger the build on the 'b3' branch
