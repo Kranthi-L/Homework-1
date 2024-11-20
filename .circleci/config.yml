@@ -3,16 +3,14 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: openjdk:18-jdk  # Use an image that includes OpenJDK (for Spring Boot)
-        environment:
-          JAVA_HOME: /usr/local/openjdk-18
+      - image: ubuntu:20.04  # Use an Ubuntu-based image with apt-get
     steps:
       - checkout  # Checkout the code from the repo
       - run:
-          name: Install Maven
+          name: Install OpenJDK 18 and Maven
           command: |
             apt-get update
-            apt-get install -y maven
+            apt-get install -y openjdk-18-jdk maven
       - run:
           name: Run tests
           command: mvn clean test  # Execute tests
