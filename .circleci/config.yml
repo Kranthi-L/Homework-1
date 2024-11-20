@@ -15,3 +15,54 @@ workflows:
   test:
     jobs:
       - test
+
+#
+#version: 2.1
+#
+#executors:
+#  java-executor:
+#    docker:
+#      - image: maven:3.8.6-openjdk-18  # Use Maven with OpenJDK 18 for Spring Boot
+#    working_directory: ~/repo
+#
+#jobs:
+#  test:
+#    executor: java-executor
+#    steps:
+#      - checkout  # Checkout the code from the repo
+#      - run:
+#          name: Run tests with JaCoCo
+#          command: mvn clean test jacoco:report  # Run tests and generate JaCoCo report
+#      - run:
+#          name: Run PMD Static Analysis
+#          command: mvn pmd:check  # Run PMD static analysis
+#      - run:
+#          name: Run SonarQube Analysis
+#          command: mvn sonar:sonar -Dsonar.host.url=https://sonarqube.example.com -Dsonar.login=$SONAR_TOKEN  # Run SonarQube analysis
+#
+#  docker-build-and-push:
+#    docker:
+#      - image: docker:20.10.7  # Use Docker image to build and push
+#    steps:
+#      - checkout
+#      - setup_remote_docker:
+#          version: 20.10.7
+#          docker_layer_caching: true  # Enable caching for faster builds
+#      - run:
+#          name: Build Docker Image
+#          command: |
+#            docker build -t $DOCKER_USERNAME/myapp:$CIRCLE_SHA1 .  # Build Docker image
+#      - run:
+#          name: Push Docker Image to DockerHub
+#          command: |
+#            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin  # Login to DockerHub
+#            docker push $DOCKER_USERNAME/myapp:$CIRCLE_SHA1  # Push image to DockerHub
+#
+#workflows:
+#  version: 2
+#  build:
+#    jobs:
+#      - test
+#      - docker-build-and-push:
+#          requires:
+#            - test  # Only run this after tests pass
