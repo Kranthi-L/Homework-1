@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:18-jdk  # Use an image that includes OpenJDK (for Spring Boot)
+      - image: openjdk:18-jdk  # Use an image that includes OpenJDK (for Spring Boot)
     steps:
       - checkout  # Checkout the code from the repo
       - run:
