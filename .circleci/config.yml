@@ -7,7 +7,7 @@ jobs:
         environment:
           SONAR_TOKEN: 00904bc659b21e79fd23564d8cc08baa75f87b75
           SONAR_PROJECT_KEY: Kranthi-L_Homework-1
-          SONAR_ORGANIZATION: kranthi-l
+          SONAR_ORG: kranthi-l
     steps:
       - checkout  # Checkout the code from the repo
       - run:
