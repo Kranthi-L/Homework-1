@@ -29,7 +29,7 @@ jobs:
           name: Install Maven
           command: |
             sudo apt-get update
-            sudo apt-get install -y maven
+            sudo apt-get install -y maven openjdk-17-jdk
       - run:
           name: Build the project (package .jar file)
           command: mvn clean install
