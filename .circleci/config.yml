@@ -14,7 +14,7 @@ jobs:
           name: Run tests and Generate JaCoCo report
           command: mvn clean test jacoco:report verify
       - store_artifacts:
-          path: target/site/jacoco/index.html
+          path: target/jacoco-report
           destination: jacoco-report
       - run:
           name: Run SonarCloud analysis
@@ -26,7 +26,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 20.10.7
           docker_layer_caching: true
       - run:
           name: Build Docker Image

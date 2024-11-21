@@ -105,6 +105,10 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/jacoco-report</outputDirectory> <!-- Path to save the report -->
+
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
