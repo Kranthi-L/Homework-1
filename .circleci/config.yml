@@ -3,24 +3,48 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: maven:3.8.6-openjdk-18  # Maven image with OpenJDK 18
+      - image: maven:3.8.6-openjdk-18
         environment:
           SONAR_TOKEN: 00904bc659b21e79fd23564d8cc08baa75f87b75
           SONAR_PROJECT_KEY: Kranthi-L_Homework-1
           SONAR_ORG: kranthi-l
     steps:
-      - checkout  # Checkout the code from the repo
+      - checkout
       - run:
           name: Run tests and Generate JaCoCo report
-          command: mvn clean test verify
+          command: mvn clean test jacoco:report verify
+      - store_artifacts:
+          path: target/site/jacoco/index.html
+          destination: jacoco-report
       - run:
           name: Run SonarCloud analysis
           command: mvn sonar:sonar -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.organization=$SONAR_ORG -Dsonar.login=$SONAR_TOKEN
+
+  build_and_push:
+    docker:
+      - image: maven:3.8.6-openjdk-18
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.7
+          docker_layer_caching: true
+      - run:
+          name: Build Docker Image
+          command: |
+            docker build -t kranthil/homework2:latest .
+      - run:
+          name: Push Docker Image to Docker Hub
+          command: |
+            docker login -u kranthil -p Docker@pwd1
+            docker push kranthil/homework2:latest
 workflows:
   version: 2
   test:
     jobs:
       - test
+      - build_and_push:
+          requires:
+            - test
 
 #
 #version: 2.1
